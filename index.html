@@ -2169,11 +2169,31 @@ footer .ghost {
     if (activeImg) {
       g.save();
       // Create a smooth studio portrait vignette mask so it blends into the hero background
-      var imgH = h * 1.2; // Increased from 0.94 to zoom in
+// 1. Calculate image zoom and position (Zoomed in)
+      var imgH = h * 1.5; 
       var imgAspect = activeImg.width / activeImg.height;
       var imgW = imgH * imgAspect;
       var drawX = cx - imgW * 0.5;
-      var drawY = h- imgH * 0.5; // Shifts the focal point to keep you centered
+      var drawY = h * 0.55 - imgH * 0.5;
+
+      // 2. Setup the Mask
+      var maskCanvas = document.createElement('canvas');
+      maskCanvas.width = w;
+      maskCanvas.height = h;
+      var mCtx = maskCanvas.getContext('2d');
+
+      mCtx.save();
+      
+      // FIX: Use 'h' instead of 'imgH' for the gradient so the soft frame stays exactly the same size regardless of zoom
+      var maskInner = h * 0.20; 
+      var maskOuter = h * 0.50;
+      var silGrad = mCtx.createRadialGradient(cx, cy + 40 * scale, maskInner, cx, cy + 40 * scale, maskOuter);
+      
+      silGrad.addColorStop(0, 'rgba(0,0,0,1)');
+      silGrad.addColorStop(0.78, 'rgba(0,0,0,0.96)');
+      silGrad.addColorStop(1, 'rgba(0,0,0,0)');
+      mCtx.fillStyle = silGrad;
+      mCtx.fillRect(0, 0, w, h);
 
       // Soft rounded studio silhouette mask
       var maskCanvas = document.createElement('canvas');
