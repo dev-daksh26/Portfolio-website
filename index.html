@@ -2169,11 +2169,11 @@ footer .ghost {
     if (activeImg) {
       g.save();
       // Create a smooth studio portrait vignette mask so it blends into the hero background
-      var imgH = h * 1.5; // Increased from 0.94 to zoom in
+      var imgH = h * 1.2; // Increased from 0.94 to zoom in
       var imgAspect = activeImg.width / activeImg.height;
       var imgW = imgH * imgAspect;
       var drawX = cx - imgW * 0.5;
-      var drawY = h * 0.55 - imgH * 0.5; // Shifts the focal point to keep you centered
+      var drawY = h- imgH * 0.5; // Shifts the focal point to keep you centered
 
       // Soft rounded studio silhouette mask
       var maskCanvas = document.createElement('canvas');
