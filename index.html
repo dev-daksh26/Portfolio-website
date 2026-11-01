@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="light">
+<html lang="en" data-theme="dark">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -547,16 +547,7 @@ nav li a:hover {
 
 /* Interactive Controls Bar at bottom-center of Hero */
 .hero-controls {
-  position: absolute;
-  z-index: 10;
-  bottom: 56px;
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  gap: 8px;
-  align-items: center;
-  flex-wrap: wrap;
-  justify-content: center;
+  display: none !important;
 }
 .visor-ctl {
   background: rgba(14, 14, 16, 0.78);
@@ -2020,18 +2011,13 @@ footer .ghost {
   onScroll();
 
   /* =========================================================================
-     8. FIXED HERO PORTRAIT + CURSOR RADIUS CYBER AR / HEADPHONES REVEAL ENGINE
-     - Does NOT revolve or rotate.
-     - Automatically loads user's photo ('WhatsApp Image 2026-03-24 at 11.45.03 PM (1).jpeg')
-       or saved custom photo, with a built-in high-detail studio portrait fallback.
-     - Moving cursor across the hero reveals the glowing Orange Aura + AR Visor +
-       Studio Headphones layer inside a smooth circular radius (like Screenshot 1 & 2).
+     8. FIXED HERO PORTRAIT + CURSOR RADIUS REVEAL ENGINE
      ========================================================================= */
   var canvas = $('portraitCanvas');
   var ctx = canvas.getContext('2d');
   var hero = $('home');
 
-  // Offscreen buffers for Base (normal monochrome sculpture/photo) and Reveal (AR Visor + Headphones)
+  // Offscreen buffers for Base and Reveal
   var baseBuffer = document.createElement('canvas');
   var baseCtx = baseBuffer.getContext('2d');
   var revealBuffer = document.createElement('canvas');
@@ -2160,7 +2146,7 @@ footer .ghost {
     var cy = h * 0.45;
     var scale = Math.min(w, h) / 760;
 
-    // 1. If Cyber Hover Layer: Draw the warm burnt-orange ambient aura behind the head/glasses (matching Screenshot 1)
+    // 1. If Cyber Hover Layer: Draw the warm burnt-orange ambient aura behind the head/glasses
     if (isCyberHover) {
       g.save();
       g.translate(cx - 20 * scale, cy - 55 * scale);
@@ -2205,7 +2191,7 @@ footer .ghost {
 
       mCtx.globalCompositeOperation = 'source-in';
       if (!isCyberHover) {
-        // Obsidian monochrome studio grade for base layer (matching Screenshot 2)
+        // Obsidian monochrome studio grade for base layer
         mCtx.filter = 'grayscale(100%) contrast(122%) brightness(88%)';
       } else if (!userHoverImg) {
         // Warm cyber high-contrast grade when hovering
@@ -2217,14 +2203,11 @@ footer .ghost {
       g.drawImage(maskCanvas, 0, 0);
       g.restore();
 
-      // If the user didn't upload a separate 2nd hover photo, draw the Cyber AR Visor + Headphones onto their photo!
-      if (isCyberHover && !userHoverImg) {
-        drawCyberGearOverlay(g, cx + 48 * scale, cy - 82 * scale, scale * 0.92);
-      }
+      // Headphone + AR glasses overlay disabled per request
       return;
     }
 
-    // 3. Built-in Fixed Studio Sculpted Portrait of Daksh (Torso, Jacket, Round Sunglasses + Cyber AR/Headphones on Hover)
+    // 3. Built-in Fixed Studio Sculpted Portrait of Daksh (Torso, Jacket, Round Sunglasses)
     g.save();
     g.translate(cx, cy);
     g.scale(scale, scale);
@@ -2393,180 +2376,35 @@ footer .ghost {
     g.quadraticCurveTo(2, 46, 26, 35);
     g.stroke();
 
-    if (!isCyberHover) {
-      // BASE STATE: Classic sleek dark round sunglasses (from Daksh's photo)
-      g.fillStyle = '#070709';
-      g.strokeStyle = '#3a3a40';
-      g.lineWidth = 3;
-      [-44, 44].forEach(function (lx) {
-        g.beginPath();
-        g.arc(lx, -26, 32, 0, Math.PI * 2);
-        g.fill();
-        g.stroke();
-
-        // Subtle lens reflection
-        g.strokeStyle = 'rgba(255,255,255,0.22)';
-        g.lineWidth = 2;
-        g.beginPath();
-        g.arc(lx - 6, -30, 20, -2.2, -0.9);
-        g.stroke();
-        g.strokeStyle = '#3a3a40';
-        g.lineWidth = 3;
-      });
-      // Nose bridge & temple arms
+    // Classic sleek dark round sunglasses (used in both base and hover states instead of AR/headphones)
+    g.fillStyle = '#070709';
+    g.strokeStyle = '#3a3a40';
+    g.lineWidth = 3;
+    [-44, 44].forEach(function (lx) {
       g.beginPath();
-      g.moveTo(-12, -28);
-      g.quadraticCurveTo(0, -34, 12, -28);
-      g.moveTo(-76, -28);
-      g.lineTo(-104, -24);
-      g.moveTo(76, -28);
-      g.lineTo(104, -24);
-      g.stroke();
-    } else {
-      // HOVER RADIUS STATE: Cyber AR Lunette Visor + Studio Over-Ear Cyber Headphones!
-      drawCyberGearOverlay(g, 0, -26, 1.0);
-    }
-
-    g.restore();
-  }
-
-  // Draws the Studio Over-Ear Cyber Headphones + Glowing AR Visor (matching Screenshot 1)
-  function drawCyberGearOverlay(g, centerX, eyeY, sc) {
-    g.save();
-    g.translate(centerX, eyeY);
-    g.scale(sc, sc);
-
-    // 1. STUDIO OVER-EAR CYBER HEADPHONES (with glowing burnt-orange telemetry rings)
-    g.save();
-    // Headband arch over the crown
-    g.strokeStyle = '#1c1c20';
-    g.lineWidth = 16;
-    g.lineCap = 'round';
-    g.beginPath();
-    g.arc(0, -24, 134, Math.PI * 1.08, Math.PI * 1.92);
-    g.stroke();
-
-    // Orange accent trim on headband
-    g.strokeStyle = 'rgba(255, 106, 34, 0.75)';
-    g.lineWidth = 2.5;
-    g.beginPath();
-    g.arc(0, -24, 141, Math.PI * 1.15, Math.PI * 1.85);
-    g.stroke();
-
-    // Left & Right Over-Ear Cups
-    [-124, 124].forEach(function (hx) {
-      var side = hx < 0 ? -1 : 1;
-      g.save();
-      g.translate(hx, 8);
-      g.rotate(side * -0.08);
-
-      // Outer metallic cup shell
-      g.fillStyle = '#141417';
-      g.strokeStyle = '#ff6a22';
-      g.lineWidth = 2.2;
-      g.beginPath();
-      g.roundRect(-20, -48, 40, 96, 18);
+      g.arc(lx, -26, 32, 0, Math.PI * 2);
       g.fill();
       g.stroke();
 
-      // Glowing LED telemetry ring on headphone cup
-      g.strokeStyle = 'rgba(255, 135, 65, 0.9)';
+      // Subtle lens reflection
+      g.strokeStyle = 'rgba(255,255,255,0.22)';
       g.lineWidth = 2;
       g.beginPath();
-      g.ellipse(side * 4, 0, 8, 28, 0, 0, Math.PI * 2);
+      g.arc(lx - 6, -30, 20, -2.2, -0.9);
       g.stroke();
-
-      // Glowing status dots
-      g.fillStyle = '#ff7b3a';
-      g.beginPath();
-      g.arc(side * 4, -14, 2.5, 0, Math.PI * 2);
-      g.arc(side * 4, 14, 2.5, 0, Math.PI * 2);
-      g.fill();
-
-      g.restore();
+      g.strokeStyle = '#3a3a40';
+      g.lineWidth = 3;
     });
-    g.restore();
-
-    // 2. TRANSLUCENT AMBER / ORANGE AR VISOR FRAME (Matching "LUNETTE" Screenshot 1)
-    g.save();
-    // Translucent warm amber frame
-    g.fillStyle = 'rgba(218, 132, 82, 0.42)';
-    g.strokeStyle = 'rgba(255, 168, 112, 0.88)';
-    g.lineWidth = 3.2;
-
-    // Left & Right sculpted AR Lenses
-    [-48, 48].forEach(function (lx) {
-      g.beginPath();
-      g.roundRect(lx - 40, -32, 80, 62, 22);
-      g.fill();
-      g.stroke();
-
-      // Inner dark orange-tinted HUD glass
-      var lensGrad = g.createLinearGradient(lx - 36, -28, lx + 36, 28);
-      lensGrad.addColorStop(0, 'rgba(255, 115, 45, 0.46)');
-      lensGrad.addColorStop(0.5, 'rgba(35, 18, 12, 0.72)');
-      lensGrad.addColorStop(1, 'rgba(255, 95, 25, 0.38)');
-      g.fillStyle = lensGrad;
-      g.beginPath();
-      g.roundRect(lx - 35, -27, 70, 52, 18);
-      g.fill();
-
-      // Diagonal Laser Telemetry Grid Lines inside lenses (Exact match to Screenshot 1!)
-      g.save();
-      g.beginPath();
-      g.roundRect(lx - 35, -27, 70, 52, 18);
-      g.clip();
-
-      g.strokeStyle = '#ff7e42';
-      g.shadowColor = '#ff5500';
-      g.shadowBlur = 8;
-      g.lineWidth = 1.6;
-      g.beginPath();
-      g.moveTo(lx - 28, -24);
-      g.lineTo(lx + 24, 24);
-      g.moveTo(lx + 18, -26);
-      g.lineTo(lx - 22, 26);
-      g.moveTo(lx - 32, 4);
-      g.lineTo(lx + 30, -12);
-      g.moveTo(lx + 6, -28);
-      g.lineTo(lx + 26, 22);
-      g.stroke();
-      g.restore();
-
-      // Restore frame fill for second lens
-      g.fillStyle = 'rgba(218, 132, 82, 0.42)';
-    });
-
-    // Center Nose Bridge & Top Bar
-    g.fillStyle = 'rgba(225, 140, 88, 0.65)';
+    // Nose bridge & temple arms
     g.beginPath();
-    g.roundRect(-12, -16, 24, 12, 4);
-    g.fill();
+    g.moveTo(-12, -28);
+    g.quadraticCurveTo(0, -34, 12, -28);
+    g.moveTo(-76, -28);
+    g.lineTo(-104, -24);
+    g.moveTo(76, -28);
+    g.lineTo(104, -24);
     g.stroke();
 
-    // Temple Arms with Glowing Circuit Traces & "DAKSH" badge (like "LUNETTE" in Screenshot 1)
-    [-98, 88].forEach(function (tx, idx) {
-      var wArm = 26;
-      g.fillStyle = 'rgba(215, 128, 76, 0.72)';
-      g.beginPath();
-      g.roundRect(idx === 0 ? -114 : 88, -14, wArm, 22, 5);
-      g.fill();
-      g.stroke();
-
-      // 3 vertical glowing LED dots near hinge (exact match to Screenshot 1)
-      var dotX = idx === 0 ? -84 : 84;
-      g.fillStyle = '#ffb485';
-      g.shadowColor = '#ff6a22';
-      g.shadowBlur = 6;
-      [-8, 0, 8].forEach(function (dy) {
-        g.beginPath();
-        g.arc(dotX, dy, 2.2, 0, Math.PI * 2);
-        g.fill();
-      });
-      g.shadowBlur = 0;
-    });
-
-    g.restore();
     g.restore();
   }
 
@@ -2638,7 +2476,7 @@ footer .ghost {
     // 1. Always draw the FIXED Base Portrait Layer first
     ctx.drawImage(baseBuffer, 0, 0);
 
-    // 2. Composite the Cyber AR Visor + Headphones Reveal Layer
+    // 2. Composite the Reveal Layer
     if (visorMode === 'locked') {
       ctx.drawImage(revealBuffer, 0, 0);
     } else if (visorMode === 'cursor' && pointer.alpha > 0.01) {
