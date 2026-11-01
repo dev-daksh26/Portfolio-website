@@ -2194,21 +2194,7 @@ footer .ghost {
       silGrad.addColorStop(1, 'rgba(0,0,0,0)');
       mCtx.fillStyle = silGrad;
       mCtx.fillRect(0, 0, w, h);
-
-      // Soft rounded studio silhouette mask
-      var maskCanvas = document.createElement('canvas');
-      maskCanvas.width = w;
-      maskCanvas.height = h;
-      var mCtx = maskCanvas.getContext('2d');
-
-      mCtx.save();
-      var silGrad = mCtx.createRadialGradient(cx, cy + 40 * scale, imgH * 0.22, cx, cy + 40 * scale, imgH * 0.54);
-      silGrad.addColorStop(0, 'rgba(0,0,0,1)');
-      silGrad.addColorStop(0.78, 'rgba(0,0,0,0.96)');
-      silGrad.addColorStop(1, 'rgba(0,0,0,0)');
-      mCtx.fillStyle = silGrad;
-      mCtx.fillRect(0, 0, w, h);
-
+    
       mCtx.globalCompositeOperation = 'source-in';
       if (!isCyberHover) {
         // Obsidian monochrome studio grade for base layer
