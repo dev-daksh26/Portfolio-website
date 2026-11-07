@@ -1282,43 +1282,32 @@ footer .ghost {
   background: #1f1f24;
 }
 
-/* Responsive Breakpoints */
+/* Tablet & Mobile Responsive Overrides */
 @media (max-width: 920px) {
   nav { grid-template-columns: 1fr auto; }
-  nav ul, .glass-pill .date, .glass-pill .sep, .trust { display: none; }
-  .widget {
-    top: auto;
-    bottom: 64px;
-    left: 18px !important;
-    right: auto !important;
-    width: calc(100vw - 36px);
-    max-width: 320px;
-  }
-  .hero-controls {
-    bottom: auto;
-    top: 74px;
-    left: auto;
-    right: 18px;
-    transform: none;
-    justify-content: flex-end;
-  }
-  .copy { top: 34%; max-width: 92%; }
-  .studio, .cols { grid-template-columns: 1fr; }
-  .grid-work { grid-template-columns: 1fr; }
+  nav ul, .glass-pill .date, .glass-pill .sep, .trust, .row span, .strip span:nth-child(2) { display: none; }
+  .hero { min-height: 620px; display: flex; flex-direction: column; justify-content: space-between; padding-top: 76px; }
+  .copy { position: relative; top: auto; transform: none; max-width: 100%; z-index: 8; margin-top: 12px; }
+  .copy h1 { font-size: clamp(28px, 7vw, 42px); }
+  .widget { position: relative; inset: auto !important; width: min(100%, 340px); margin: auto 18px 54px; z-index: 9; }
+  .ghost-front { font-size: clamp(72px, 23vw, 180px); bottom: 7%; }
+  .studio, .grid-work, .archive-list { grid-template-columns: 1fr; }
   .grid-work > .card-wrap:nth-child(even) { transform: none !important; }
-  .archive-list { grid-template-columns: 1fr; }
-  .row span { display: none; }
-  .row { grid-template-columns: 34px 1fr 34px; }
-  .n4, .pills { grid-template-columns: repeat(2, 1fr); }
-  .strip span:nth-child(2) { display: none; }
+  .row { grid-template-columns: 32px 1fr 32px; gap: 10px; padding: 16px 12px; }
+  .n4, .pills, .cols { grid-template-columns: repeat(2, 1fr); }
+  .cols { padding-bottom: 90px; }
+  .find, .archive-head { flex-direction: column; align-items: flex-start; gap: 12px; }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  *, ::before, ::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-    scroll-behavior: auto !important;
+@media (max-width: 540px) {
+  .glass-pill small { display: none; }
+  .cta .btn { width: 100%; justify-content: space-between; }
+  .card { height: auto; min-height: 290px; padding: 72px 18px 20px; }
+  .card .st-wrap { top: 24px; left: auto; right: 62px; transform: none; width: 32px; height: 32px; }
+  .card .st { width: 24px; height: 24px; }
+  .cols { grid-template-columns: 1fr; gap: 22px; }
+  .modal-box { padding: 20px; }
+}
   }
   .pills div { transform: none; opacity: 1; }
 }
